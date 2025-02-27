@@ -1,21 +1,17 @@
+
 pipeline {
     agent any
 
-    environment {
-        GRADLE_HOME = '/usr/local/gradle'  // Adjust if Gradle is installed elsewhere
+    tools {
+        gradle 'gradle-6.8'  // Use the name you gave your Gradle installation in Jenkins' Global Tool Configuration
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Build') {
+        stage('Clean') {
             steps {
                 script {
-                    sh './gradlew clean build'
+                    // Run Gradle clean task
+                    sh './gradlew clean'
                 }
             }
         }
@@ -23,24 +19,28 @@ pipeline {
         stage('Test') {
             steps {
                 script {
+                    // Run Gradle test task
                     sh './gradlew test'
                 }
             }
         }
 
-        stage('Deploy') {
+        stage('Package') {
             steps {
-                echo 'Deploying the application...'
-                // Add deployment steps (e.g., deploy to AWS, Heroku, etc.)
+                script {
+                    // Run Gradle build/package task
+                    sh './gradlew build'  // or 'gradle assemble' depending on your project setup
+                }
             }
         }
     }
+
     post {
         success {
-            echo 'Build and tests completed successfully.'
+            echo 'Build and tests passed successfully!'
         }
         failure {
-            echo 'Build failed.'
+            echo 'Build failed. Please check the logs.'
         }
     }
 }
