@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     tools {
-        gradle 'gradle-6.8'  // Use the name you gave your Gradle installation in Jenkins' Global Tool Configuration
+        gradle 'Gradle-6.8'  // Use the name you gave your Gradle installation in Jenkins' Global Tool Configuration
     }
 
     stages {
