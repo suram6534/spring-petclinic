@@ -3,27 +3,41 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven 3'  // Name defined in Global Tool Configuration
+        maven 'Maven 3'  // Name defined in Jenkins Global Tool Configuration
     }
 
     stages {
-        stage('Build') {
+        stage('Clean') {
             steps {
-                // Running Maven commands
-                sh 'mvn clean install'  // Run Maven clean install
+                // Run Maven clean task to clean up the project
+                echo 'Running Maven clean...'
+                sh 'mvn clean'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'mvn test'  // Run Maven tests
+                // Run Maven test task to run unit tests
+                echo 'Running Maven test...'
+                sh 'mvn test'
             }
         }
 
         stage('Package') {
             steps {
-                sh 'mvn package'  // Run Maven package
+                // Run Maven package task to package the application (e.g., JAR/WAR)
+                echo 'Running Maven package...'
+                sh 'mvn package'
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Build, Test, and Package were successful!'
+        }
+        failure {
+            echo 'Build failed. Please check the logs.'
         }
     }
 }
