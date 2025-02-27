@@ -3,44 +3,28 @@ pipeline {
     agent any
 
     tools {
-        gradle 'Gradle-6.8'  // Use the name you gave your Gradle installation in Jenkins' Global Tool Configuration
+        maven 'Maven 3'  // Name defined in Global Tool Configuration
     }
 
     stages {
-        stage('Clean') {
+        stage('Build') {
             steps {
-                script {
-                    // Run Gradle clean task
-                    sh './gradlew clean'
-                }
+                // Running Maven commands
+                sh 'mvn clean install'  // Run Maven clean install
             }
         }
 
         stage('Test') {
             steps {
-                script {
-                    // Run Gradle test task
-                    sh './gradlew test'
-                }
+                sh 'mvn test'  // Run Maven tests
             }
         }
 
         stage('Package') {
             steps {
-                script {
-                    // Run Gradle build/package task
-                    sh './gradlew build'  // or 'gradle assemble' depending on your project setup
-                }
+                sh 'mvn package'  // Run Maven package
             }
         }
     }
-
-    post {
-        success {
-            echo 'Build and tests passed successfully!'
-        }
-        failure {
-            echo 'Build failed. Please check the logs.'
-        }
-    }
 }
+
