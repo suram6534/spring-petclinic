@@ -22,14 +22,6 @@ pipeline {
                 sh 'mvn test'
             }
         }
-
-        stage('Package') {
-            steps {
-                // Run Maven package task to package the application (e.g., JAR/WAR)
-                echo 'Running Maven package...'
-                sh 'mvn package'
-            }
-        }
     }
 
     post {
